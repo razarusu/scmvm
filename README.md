@@ -2,7 +2,7 @@
 
 ## NAME
 
-`scmvm` - a scheme virtual machine. And assembler.
+`scmvm` - a Scheme virtual machine. And assembler.
 
 ## HOW TO USE IT
 ```
@@ -14,7 +14,7 @@ REPL> (load "vm.scm")
 
 `scmvm` is a very basic virtual machine for experimenting with compilation techniques. It is designed to run in Chicken Scheme (*defs.scm* is actually a copy of my *.csirc*), but modifying it to run under other Schemes is trivial.
 
-`scmvm` instruction code isn't really a bytecode but a *symbolic code* - that is, it is made of Lisp atoms. This enables extending the instruction set with great degree of ease.
+`scmvm` instruction code isn't really a bytecode but a *symbolic code* - that is, it is made of Lisp atoms. This enables extending the instruction set with great ease.
 
 `scmvm` comes with an assembler. In the repository you can find the examples of assembly code (note that it is mostly a symbolic code with labels instead of raw addresses).
 
