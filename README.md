@@ -1,10 +1,12 @@
 # scmvm
+
 ## NAME
+
 `scmvm` - a scheme virtual machine. And assembler.
 
 ## HOW TO USE IT
 ```
-$ scheme-of-choice             # scheme-of-choice means csi
+  $ scheme-of-choice             # scheme-of-choice means csi
 REPL> (load "defs.scm")
 REPL> (load "vm.scm")
 ```
@@ -29,3 +31,7 @@ REPL> (load "vm.scm")
 (**vm:reset**) - resets the VM. Resetting `scmvm` might not be the thing you think it is.
 
 (**vm:load-program** *vector*) - loads a *vector* with symbolic code into VM's memory.
+
+## BUGS
+
+The README is misleading. The code is, too.
