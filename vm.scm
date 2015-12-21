@@ -2,6 +2,34 @@
 (declare (export vm:run vm:step vm:dump-registers
 		 vm:reset vm:load-program vm:assemble-from-file))
 
+(define (str . items)
+  (apply string-append (map ->string items)))
+
+(define (build-symbol . name-parts)
+  (string->symbol (apply str name-parts)))
+
+;; (define-stack foo) will generate:
+;;  - variable `foo-stack';
+;;  - function `push-foo!';
+;;  - function `pop-foo!'.
+
+(define-macro (define-stack name)
+  (let ((stack-name (build-symbol name '-stack))
+	(push-name (build-symbol 'push- name '!))
+	(pop-name (build-symbol 'pop- name '!)))
+    `(begin
+       (define ,stack-name '())
+       (define (,push-name obj)
+	 (set! ,stack-name (cons obj ,stack-name)))
+       (define (,pop-name)
+	 (let ((obj (car ,stack-name)))
+	   (set! ,stack-name (cdr ,stack-name))
+	   obj)))))
+
+(define-stack addr)
+
+(define-stack data)
+
 (define program (make-vector 64 'halt))
 
 (define (program-set! addr val)
@@ -9,26 +37,6 @@
 
 (define (vm:load-program prg)
   (set! program prg))
-
-(define addr-stack '())
-
-(define (push-addr! addr)
-  (set! addr-stack (cons addr addr-stack)))
-
-(define (pop-addr!)
-  (let ((addr (car addr-stack)))
-    (set! addr-stack (cdr addr-stack))
-    addr))
-
-(define data-stack '())
-
-(define (push-data! data)
-  (set! data-stack (cons data data-stack)))
-
-(define (pop-data!)
-  (let ((data (car data-stack)))
-    (set! data-stack (cdr data-stack))
-    data))
 
 (define (make-register)
   (list 'register 0))
@@ -77,6 +85,16 @@
 
 (define (jump addr)
   (set-register! (register 'pc) addr))
+
+;; (define-instruction load ((register dst)
+;; 			  (immediate val))
+;;   (set-register! dst val))
+
+;; (let ((hdlr (lambda (src dst)
+;; 	      (let* ((dst (register (fetch!)))
+;; 		     (val (immediate (fetch!))))
+;; 		(set-register! dst (regvalue src))))))
+;;   (cons (cons 'copy hdlr) instruction-handlers))
 
 (define (vm:step)
   (let ((instruction (fetch!)))
