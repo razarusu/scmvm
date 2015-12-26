@@ -216,7 +216,7 @@
 		 (program-counter origin)
 		 (labels '())		  ; alist
 		 (label-references '()))  ; alist
-	(cond ((eq? thing '#!eof)	  ; Stop assembling on EOF
+	(cond ((eof-object? thing)	  ; Stop assembling on EOF
 	       (fill-holes! label-references labels))
 	      ((vector? thing)		; Vectors denote comments
 	       (loop (read) program-counter labels label-references))
